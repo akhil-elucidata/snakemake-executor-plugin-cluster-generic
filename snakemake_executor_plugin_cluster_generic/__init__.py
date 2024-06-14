@@ -62,13 +62,29 @@ class ExecutorSettings(ExecutorSettingsBase):
 # Required:
 # Specify common settings shared by various executors.
 common_settings = CommonSettings(
+    # define whether your executor plugin executes locally
+    # or remotely. In virtually all cases, it will be remote execution
+    # (cluster, cloud, etc.). Only Snakemake's standard execution
+    # plugins (snakemake-executor-plugin-dryrun, snakemake-executor-plugin-local)
+    # are expected to specify False here.
     non_local_exec=True,
-    implies_no_shared_fs=False,
-    job_deploy_sources=False,
+    # whether the executor implies to not have a shared file system
+    implies_no_shared_fs=True,
+    # whether to deploy workflow sources to default storage provider before execution
+    job_deploy_sources=False, #---- True
+    # whether arguments for setting the storage provider shall be passed to jobs
     pass_default_storage_provider_args=True,
+    # whether arguments for setting default resources shall be passed to jobs
     pass_default_resources_args=True,
+    # whether environment variables shall be passed to jobs (if False, use
+    # self.envvars() to obtain a dict of environment variables and their values
+    # and pass them e.g. as secrets to the execution backend)
     pass_envvar_declarations_to_cmd=True,
+    # whether the default storage provider shall be deployed before the job is run on
+    # the remote node. Usually set to True if the executor does not assume a shared fs
     auto_deploy_default_storage_provider=False,
+    # specify initial amount of seconds to sleep before checking for job status
+    init_seconds_before_status_checks=0,
 )
 
 
